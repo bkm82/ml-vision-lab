@@ -23,10 +23,10 @@ def my_add(a: int, b: int) -> int:
         b:int  the second integer.
 
     Returns:
-        Returns the sum of the two integers.
+        Returns the absolute value of the sum of the two integers.
     """
 
-    return a + b
+    return abs(a + b)
 
 
 if __name__ == "__main__":  # pragma: no cover

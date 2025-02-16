@@ -6,8 +6,8 @@ def test_foo():
 
 
 def test_my_add():
-    a = 5
-    b = 7
+    a = -5
+    b = -7
     actual = my_add(a=a, b=b)
     expected = 12
     assert actual == expected
