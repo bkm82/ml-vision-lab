@@ -13,7 +13,7 @@ def foo(bar: str) -> str:
     return bar
 
 
-def my_add(a: int, b: int) -> int:
+def my_add(a: int, b: int, absolute: bool = False) -> int:
     """Add two integers together.
 
     A simple function to test the structure of the overall project
@@ -21,12 +21,16 @@ def my_add(a: int, b: int) -> int:
     Args:
         a:int  the first integer.
         b:int  the second integer.
+        absolute: bool if the absolute value should be returned
 
     Returns:
-        Returns the absolute value of the sum of the two integers.
+        Returns the sum of the two integers.
+        If absolute = True then return the aboslute value of the sum.
     """
-
-    return abs(a + b)
+    result = a + b
+    if absolute:
+        result = abs(result)
+    return result
 
 
 if __name__ == "__main__":  # pragma: no cover
