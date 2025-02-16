@@ -13,5 +13,21 @@ def foo(bar: str) -> str:
     return bar
 
 
+def my_add(a: int, b: int) -> int:
+    """Add two integers together.
+
+    A simple function to test the structure of the overall project
+
+    Args:
+        a:int  the first integer.
+        b:int  the second integer.
+
+    Returns:
+        Returns the sum of the two integers.
+    """
+
+    return a + b
+
+
 if __name__ == "__main__":  # pragma: no cover
     pass
