@@ -15,6 +15,8 @@ from torchvision import datasets, transforms
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 
 def get_n_params(module):
     return sum([math.prod(list(p.shape)) for p in module.parameters()])
@@ -67,7 +69,7 @@ class ConvNet(torch.nn.Module):
         # By creating a  tensor of the correct image and creating
         # the convolutional_seq
         shape_numpy = np.zeros([1, input_channels, n_pixels, n_pixels])
-        shape_tensor = torch.from_numpy(shape_numpy).float()
+        shape_tensor = torch.from_numpy(shape_numpy).float().to(device)
         conv_seq_out = self.convolution_sequential(shape_tensor)
         n_data, conv_hidden = conv_seq_out.shape
         logger.debug(f"conv_hidden: {conv_hidden}")
@@ -90,12 +92,13 @@ class ConvNet(torch.nn.Module):
 class ConvNet_Learner:
     def __init__(self):
         self.learning_rate = 1e-3
-        self.classifier = ConvNet()
+        self.classifier = ConvNet().to(device)
         self.optimizer = Adam(self.classifier.parameters(), self.learning_rate)
         self.loss_function = torch.nn.CrossEntropyLoss()
         # Paramaters
 
     def take_step(self, inputs, labels):
+        inputs, labels = inputs.to(device), labels.to(device)
         predicitons = self.decision_function(inputs)
         loss = self.loss_function(predicitons, labels)
         self.optimizer.zero_grad()
@@ -115,7 +118,7 @@ class ConvNet_Learner:
         running_val_loss = 0
         for batch in validation_dataset:
             X, y = batch
-            X, y = X.to("cpu"), y.to("cpu")
+            X, y = X.to(device), y.to(device)
             predictions = self.decision_function(X)
             running_val_loss += self.loss_function(predictions, y)
         val_loss = running_val_loss / len(validation_dataset)
@@ -131,7 +134,7 @@ class ConvNet_Learner:
             for batch in training_dataset:
                 X, y = batch
 
-                X, y = X.to("cpu"), y.to("cpu")
+                X, y = X.to(device), y.to(device)
                 running_loss += self.take_step(inputs=X, labels=y)
 
             epoch_loss = running_loss / len(training_dataset)
@@ -207,9 +210,10 @@ def train():
 
 
 def main():
+    logger.info(f"This is running on the {device}")
     # Instance of neural network, loss, optimizer
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
-    clf = ConvNet().to("cpu")
+    clf = ConvNet().to(device)
     # opt = Adam(clf.parameters(), lr=1e-3)
     # loss_fn = nn.CrossEntropyLoss()
     # train()
@@ -217,14 +221,14 @@ def main():
     current_file_path = os.path.dirname(__file__)
     classifier_path = os.path.join(current_file_path, "model_state.pt")
     with open(classifier_path, "rb") as f:
-        clf.load_state_dict(load(f))
+        clf.load_state_dict(load(f, map_location=device))
     current_file_path = os.path.dirname(__file__)
 
     clf.eval()
 
     img_path = os.path.join(current_file_path, "data/test/img_2.jpg")
     img = Image.open(img_path)
-    img_tensor = transform(img).unsqueeze(0).to("cpu")
+    img_tensor = transform(img).unsqueeze(0).to(device)
     with torch.no_grad():
         # make a prediction
         outputs = clf(img_tensor)
