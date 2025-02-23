@@ -63,7 +63,7 @@ class ConvNet(torch.nn.Module):
 
         convolution_layers.append(torch.nn.Flatten())
 
-        self.convolution_sequential = torch.nn.Sequential(*convolution_layers)
+        self.convolution_sequential = torch.nn.Sequential(*convolution_layers).to(device)
 
         # Get the shape of the convolution output automatically
         # By creating a  tensor of the correct image and creating
@@ -78,7 +78,7 @@ class ConvNet(torch.nn.Module):
             torch.nn.Linear(conv_hidden, linear_hidden), torch.nn.ReLU(), torch.nn.Linear(linear_hidden, output_classes)
         )
 
-        self.sequential = torch.nn.Sequential(self.convolution_sequential, self.linear_sequential)
+        self.sequential = torch.nn.Sequential(self.convolution_sequential, self.linear_sequential).to(device)
 
         conv_params = get_n_params(self.convolution_sequential)
         linear_params = get_n_params(self.linear_sequential)
@@ -86,7 +86,7 @@ class ConvNet(torch.nn.Module):
         logger.debug(f"Convoluted = {conv_params}, Linear = {linear_params} Total= {total_params}")
 
     def forward(self, x):
-        return self.sequential(x)
+        return self.sequential(x).to(device)
 
 
 class ConvNet_Learner:
@@ -150,7 +150,7 @@ class ConvNet_Learner:
 
 def load_dataset():
     batch_size = 100
-    subset = 0.10
+    subset = 0.50
     validation_split = 0.20
     random_seed = 4
 
@@ -216,7 +216,7 @@ def main():
     clf = ConvNet().to(device)
     # opt = Adam(clf.parameters(), lr=1e-3)
     # loss_fn = nn.CrossEntropyLoss()
-    # train()
+    #train()
 
     current_file_path = os.path.dirname(__file__)
     classifier_path = os.path.join(current_file_path, "model_state.pt")
@@ -225,8 +225,10 @@ def main():
     current_file_path = os.path.dirname(__file__)
 
     clf.eval()
-
-    img_path = os.path.join(current_file_path, "data/test/img_2.jpg")
+    project_root = os.path.dirname(os.path.dirname(current_file_path))
+    
+    img_path = os.path.join(project_root, "examples/test/img_3.jpg")
+    
     img = Image.open(img_path)
     img_tensor = transform(img).unsqueeze(0).to(device)
     with torch.no_grad():
