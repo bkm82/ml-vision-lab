@@ -3,6 +3,8 @@ from django.shortcuts import render
 
 from .forms import ImageUploadForm
 
+# from ml_vision_lab.classifier import classify
+
 
 @login_required
 def upload_image(request):
