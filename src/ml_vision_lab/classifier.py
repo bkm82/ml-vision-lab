@@ -216,7 +216,7 @@ def main():
     clf = ConvNet().to(device)
     # opt = Adam(clf.parameters(), lr=1e-3)
     # loss_fn = nn.CrossEntropyLoss()
-    #train()
+    # train()
 
     current_file_path = os.path.dirname(__file__)
     classifier_path = os.path.join(current_file_path, "model_state.pt")
@@ -226,9 +226,9 @@ def main():
 
     clf.eval()
     project_root = os.path.dirname(os.path.dirname(current_file_path))
-    
+
     img_path = os.path.join(project_root, "examples/test/img_3.jpg")
-    
+
     img = Image.open(img_path)
     img_tensor = transform(img).unsqueeze(0).to(device)
     with torch.no_grad():
