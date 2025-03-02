@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader, Subset
 from torchvision import datasets, transforms
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -207,17 +207,11 @@ def train():
 #  train_data = train_dataset
 #  for learner in learners:
 #     learner.train(data = train_data, k_fold)
-
-
-def main():
-    logger.info(f"This is running on the {device}")
-    # Instance of neural network, loss, optimizer
+def classify(img_path):
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
     clf = ConvNet().to(device)
-    # opt = Adam(clf.parameters(), lr=1e-3)
-    # loss_fn = nn.CrossEntropyLoss()
-    # train()
 
+    # Load the model weights
     current_file_path = os.path.dirname(__file__)
     classifier_path = os.path.join(current_file_path, "model_state.pt")
     with open(classifier_path, "rb") as f:
@@ -225,9 +219,6 @@ def main():
     current_file_path = os.path.dirname(__file__)
 
     clf.eval()
-    project_root = os.path.dirname(os.path.dirname(current_file_path))
-
-    img_path = os.path.join(project_root, "examples/test/img_3.jpg")
 
     img = Image.open(img_path)
     img_tensor = transform(img).unsqueeze(0).to(device)
@@ -238,8 +229,42 @@ def main():
         probability = torch.nn.functional.softmax(outputs, dim=1)
         top_p, top_class = probability.topk(1, dim=1)
         # _, predicted = torch.max(outputs, 1)
-        logger.info(f"I am {top_p.item():.2f}% sure that is a {top_class.item()}")
-        # print(f"The predicted class is: {predicted.item()}")
+        # logger.info(f"I am {top_p.item():.2f}% sure that is a {top_class.item()}")
+    return (top_p, top_class)
+
+
+def main():
+    logger.info(f"This is running on the {device}")
+    # Instance of neural network, loss, optimizer
+    # transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+    # clf = ConvNet().to(device)
+    # opt = Adam(clf.parameters(), lr=1e-3)
+    # loss_fn = nn.CrossEntropyLoss()
+    # train()
+
+    # current_file_path = os.path.dirname(__file__)
+    # classifier_path = os.path.join(current_file_path, "model_state.pt")
+    # with open(classifier_path, "rb") as f:
+    #     clf.load_state_dict(load(f, map_location=device))
+    current_file_path = os.path.dirname(__file__)
+
+    # clf.eval()
+    project_root = os.path.dirname(os.path.dirname(current_file_path))
+
+    img_path = os.path.join(project_root, "examples/test/img_3.jpg")
+    top_p, top_class = classify(img_path=img_path)
+    logger.info(f"I am {top_p.item():.2f}% sure that is a {top_class.item()}")
+    # img = Image.open(img_path)
+    # img_tensor = transform(img).unsqueeze(0).to(device)
+    # with torch.no_grad():
+    #     # make a prediction
+    #     outputs = clf(img_tensor)
+    #     #
+    #     probability = torch.nn.functional.softmax(outputs, dim=1)
+    #     top_p, top_class = probability.topk(1, dim=1)
+    #     # _, predicted = torch.max(outputs, 1)
+    #     logger.info(f"I am {top_p.item():.2f}% sure that is a {top_class.item()}")
+    # print(f"The predicted class is: {predicted.item()}")
 
 
 if __name__ == "__main__":

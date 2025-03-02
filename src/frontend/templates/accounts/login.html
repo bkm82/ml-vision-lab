@@ -1,6 +1,7 @@
-{% extends "base.html" %} {% block content %} {% if not
-request.user.is_authenticated %}
-<div style="margin-top: 30px">
+{% extends "base.html" %}
+{% block content %}
+{% if not request.user.is_authenticated %}
+<div>
   <form method="POST">
     {% csrf_token %} {% if error %}
     <p style="color: red">{{ error }}</p>
@@ -21,4 +22,5 @@ request.user.is_authenticated %}
   You are already logged in. Would you like to
   <a href='{% url "logout"%}'>loggout</a>?
 </p>
-{% endif%} {% endblock%}
+{% endif%}
+{% endblock%}

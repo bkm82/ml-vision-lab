@@ -1,6 +1,15 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% block content %}
 <h1>This is the home view!</h1>
 
 <p>{{content}}</p>
+
+{% if random_image %}
+    <h2>Your Random Image:</h2>
+    <img src="{{ random_image.image.url }}" alt="Random Image" style="max-width: 100%; height: auto;" />
+{% else %}
+    <p>No images found in your directory.</p>
+{% endif %}
+
 
 {% endblock content %}

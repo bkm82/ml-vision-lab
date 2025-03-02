@@ -145,3 +145,4 @@ cython_debug/
 #pytorch model
 *.pt
 scratch.org
+*media*
