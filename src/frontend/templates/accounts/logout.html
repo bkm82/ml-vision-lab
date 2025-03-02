@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% block content %} {% if
-request.user.is_authenticated %}
+{% extends "base.html" %} {% block content %}
+{% if request.user.is_authenticated %}
 <div style="margin-top: 30px">
   <form method="POST">
     {% csrf_token %}
@@ -11,4 +11,4 @@ request.user.is_authenticated %}
 <p>
   You are logged out, would you like to <a href='{% url "login"%}'>login</a>?
 </p>
-{% endif%} {% endblock%}
+{% endif %} {% endblock %}
