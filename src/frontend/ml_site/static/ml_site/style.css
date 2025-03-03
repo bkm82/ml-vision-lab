@@ -31,6 +31,19 @@
   color: black;
 }
 
+.navbar li a.navbar-block {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none; /* No underline */
+}
+
+.navbar li a.navbar-block:hover {
+  background-color: transparent; /* No change on hover */
+  color: black; /* Keep color same on hover */
+}
+
 body {
   background-color: white; /* Light grey background */
   margin: 0; /* Remove default margin */

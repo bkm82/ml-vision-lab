@@ -110,6 +110,7 @@ ignore = [
     "E731",
     #Standard pseudo-randome generator
     "S311",
+    "S104", #bind to all interfaces
 ]
 
 [tool.ruff.lint.per-file-ignores]

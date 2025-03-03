@@ -22,12 +22,13 @@ def home_view(request):
     probability = None
     if user_images.exists():
         random_image = random.choice(user_images)
-        probability, classification = classify(random_image.image.path)
-
+        probability_object, classification_object = classify(random_image.image.path)
+        probability = probability_object.item() * 100
+        classification = classification_object.item()
     context = {
         "random_image": random_image,
-        "classification": classification.item(),
-        "probability": probability.item() * 100,
+        "classification": classification,
+        "probability": probability,
         "request": request,
     }
     HTML_STRING = render_to_string("home-view.html", context=context)
