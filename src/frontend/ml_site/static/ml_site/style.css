@@ -2,6 +2,7 @@
   background-color: #606060; /* Dark background for the navbar */
   overflow: hidden;
   width: 100%; /* Ensures it spans the full width */
+  height: 50px;
   position: fixed; /* Keep it fixed at the top */
   top: 0; /* Align to the top */
   z-index: 1000; /* Ensure it stays above other content */
@@ -44,12 +45,49 @@
   color: black; /* Keep color same on hover */
 }
 
+table {
+  width: 80%; /* Makes the table full width */
+  margin: 20px auto; /* Adds space above and below the table */
+  margin-top: 30px;
+  border-collapse: collapse; /* Removes space between table borders */
+}
+
+table th,
+table td {
+  border: 1px solid #606060; /* Matches the navbar background color */
+  padding: 10px; /* Adds padding for better readability */
+  text-align: left; /* Aligns text to the left */
+}
+
+table th {
+  background-color: #606060; /* Dark background for header */
+  color: white; /* White text for header for contrast */
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2; /* Light grey for even rows for better readability */
+}
+
+table tr:hover {
+  background-color: #ddd; /* Highlight row on hover */
+}
+
 body {
   background-color: white; /* Light grey background */
   margin: 0; /* Remove default margin */
-  padding-top: 30px; /* Add padding at top to prevent content being hidden behind fixed navbar */
+  padding-top: 70px; /* Add padding at top to prevent content being hidden behind fixed navbar */
   text-align: center;
 }
+
+.centered-content {
+  display: flex; /* Use Flexbox for alignment */
+  flex-direction: column;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically (optional) */
+  text-align: center; /* Center text content */
+  margin: 20px auto; /* Auto margins for spacing */
+}
+
 h1 {
   text-align: center; /* Center-align the heading text */
   margin: 50px 0; /* Add some margin above and below the heading */

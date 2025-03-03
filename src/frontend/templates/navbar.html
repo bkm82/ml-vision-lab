@@ -1,15 +1,14 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'ml_site/style.css' %}" />
-<nav class="navbar">
+<nav class="navbar" id="navbar">
   <ul>
     {% if request.user.is_authenticated %}
-    <li><a class="navbar-block" href="#">{{request.user.username}}</a></li>
-    <li><a href="{% url 'home' %}">Home</a></li>
-    <li><a href="{% url 'upload_image' %}">Upload</a></li>
-    <li><a href="{% url 'logout' %}">Logout</a></li>
+    <li id="user-username"><a class="navbar-block" href="#">{{request.user.username}}</a></li>
+    <li id="nav-home"><a href="{% url 'home' %}">Home</a></li>
+    <li id="nav-upload"><a href="{% url 'upload_image' %}">Upload</a></li>
+    <li id="nav-logout"><a href="{% url 'logout' %}">Logout</a></li>
     {% else %}
-    <p>
-    <li><a href="{% url 'login' %}">Login</a></li>
+    <li id="nav-logout"><a href="{% url 'login' %}">Login</a></li>
     {% endif %}
   </ul>
 </nav>

@@ -1,15 +1,29 @@
 {% extends "base.html" %}
-{% block content %}
-<p>{{content}}</p>
 
+{% block content %}
+<div class="centered-content">
 {% if random_image %}
+
+    <h1>Image Classifier</h1>
     <h2>Your Random Image:</h2>
 
     <img src="{{ random_image.image.url }}" alt="Random Image" style="max-width: 100%; height: auto;" />
-    <h3>I am {{ probability|floatformat:2 }}% sure that is a {{ classification}} </h3>
+
+    <table class="table">
+      <tr>
+        <td><strong>Classification:</strong></td>
+        <td id="classification">{{ classification }}</td>
+      </tr>
+      <tr>
+        <td><strong>Probability:</strong></td>
+        <td id="probability">{{ probability|floatformat:2 }}</td>
+      </tr>
+
+    </table>
+
 {% else %}
     <p>No images found in your directory.</p>
 {% endif %}
-
+</div>
 
 {% endblock content %}
