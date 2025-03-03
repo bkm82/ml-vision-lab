@@ -3,12 +3,12 @@
 <nav class="navbar" id="navbar">
   <ul>
     {% if request.user.is_authenticated %}
-    <li id="user-username"><a class="navbar-block" href="#">{{request.user.username}}</a></li>
-    <li id="nav-home"><a href="{% url 'home' %}">Home</a></li>
-    <li id="nav-upload"><a href="{% url 'upload_image' %}">Upload</a></li>
-    <li id="nav-logout"><a href="{% url 'logout' %}">Logout</a></li>
+    <li><a class="navbar-block" href="#" id="user-username">{{request.user.username}}</a></li>
+    <li><a href="{% url 'home' %}" id="nav-home">Home</a></li>
+    <li><a href="{% url 'upload_image' %}" id="nav-upload">Upload</a></li>
+    <li><a href="{% url 'logout' %}" id="nav-logout">Logout</a></li>
     {% else %}
-    <li id="nav-logout"><a href="{% url 'login' %}">Login</a></li>
+    <li><a href="{% url 'login' %}"  id="nav-logout">Login</a></li>
     {% endif %}
   </ul>
 </nav>
